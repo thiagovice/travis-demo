@@ -47,6 +47,12 @@ it("6 ÷ 6 should equal 1", () => {
   });
 });
 
+it("6 ÷ 0 should equal Error", () => {
+  expectButtons(["6", "÷", "0", "="], {
+    total: "Error"
+  });
+});
+
 it("should support 00 + 0 =", () => {
   expectButtons(["0", "0", "+", "0", "="], {
     total: "0"
