@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "9"
+
+cache:
+  directories:
+    - node_modules
+
+script:
+  - npm run test
+
+after_success:
+  - npm run build
+
+before_deploy:
+  - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.3/netlifyctl-linux-amd64-0.3.3.tar.gz' | tar xvz
+
+deploy:
+  provider: script
+  script:
+    - 'if [ "$TRAVIS_BRANCH" != "master" ]; then ./netlifyctl deploy --draft --base-directory "build" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; else ./netlifyctl deploy --base-directory "build" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; fi'
+  skip_cleanup: true
+  on:
+    all_branches: true
